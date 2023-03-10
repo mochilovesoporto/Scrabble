@@ -79,7 +79,7 @@ def point_total_for_allPlayers():
 # Each loop -= from temp var
 # Run functions to ask for words, calculate scores, and add scores to each player
 def main():
-  rounds = 2
+  rounds = int(input("Please enter the number of rounds that you would like to play (Each player will get one turn per round): "))
   while rounds > 0:
     rounds -= 1
     add_playerWords()
