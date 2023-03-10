@@ -9,7 +9,6 @@ At the end of the 10 rounds the player with the highest score is the winner! \n
 Let's get started!
 ''')
 
-
 #Data for creating points system dictionairy
 letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 points = [1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 4, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10]
@@ -30,7 +29,7 @@ num_players = int(input("How many players are there?: "))
 
 #For each player that is found in the number of players given to us by the user, ask them to enter their name and add the input to the empty players list, while also creating a new empty list inside players_words to house their words
 for player in range(num_players):
-  players.append(input("Please enter their names one at a time: "))
+  players.append(input("Please enter their names one at a time: \n"))
   players_words.append([])
 
 player_to_words = {key: value for key, value in zip(players, players_words)}
@@ -44,10 +43,11 @@ player_to_words = {key: value for key, value in zip(players, players_words)}
 # Print each players score for their word
 def add_playerWords():
   for i in range(len(players)):
-    new_word = input("Please enter a scrabble word: ")
+    new_word = input("Please enter a scrabble word: \n")
+    new_word_upper = new_word.upper()
     player_words_nested = players_words[i]
-    player_words_nested.append(new_word)
-    print(players[i] + "You've earned: " + str(score_word(new_word)) + " points.")
+    player_words_nested.append(new_word_upper)
+    print(players[i] + " you've earned: " + str(score_word(new_word_upper)) + " points.")
 
 # Takes in word from players_word dict.
 # For each letter in that word it gets the associated points allocation from letters_to_points dict & adds it to a temp. variable points_total
