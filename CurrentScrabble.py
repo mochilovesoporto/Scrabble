@@ -26,7 +26,14 @@ players_words = [[]]
 player_to_points = {}
 
 #Request number of players to determine how many rounds of the game there are
-num_players = int(input("How many players are there?: "))
+
+while 0 == 0:
+  num_players = input("How many players are there?: ")
+  if num_players.isdigit():
+    num_players = int(num_players)
+    break
+  else:
+    print("\nYou did not enter a number, please make sure you enter a number not letters.\n")
 
 #For each player that is found in the number of players given to us by the user, ask them to enter their name and add the input to the empty players list, while also creating a new empty list inside players_words to house their words
 for player in range(num_players):
@@ -87,7 +94,13 @@ def point_total_for_allPlayers():
 # Each loop -= from temp var
 # Run functions to ask for words, calculate scores, and add scores to each player
 def main():
-  rounds = int(input("\nPlease enter the number of rounds that you would like to play (Each player will get one turn per round): "))
+  while 0 == 0:
+    rounds = input("\nPlease enter the number of rounds that you would like to play (Each player will get one turn per round): ")
+    if rounds.isdigit():
+      rounds = int(rounds)
+      break
+    else:
+      print("\nYou did not enter a number, please make sure you enter a number not letters.")
   while rounds > 0:
     rounds -= 1
     add_playerWords()
