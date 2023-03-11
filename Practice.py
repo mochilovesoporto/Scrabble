@@ -1,3 +1,4 @@
-list = [1, 2, 3, 4]
-listTwo = [
-for i in range(len(list)):
+import enchant
+test = input("Ask: ")
+d = enchant.Dict("en_Au")
+print(d.check(test))

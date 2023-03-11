@@ -1,4 +1,5 @@
 # Scrabble
+import enchant
 
 #Print str to user and introduce game as well as game rules
 print(''' Hello! Welcome to Scrabble. \n
@@ -29,12 +30,14 @@ num_players = int(input("How many players are there?: "))
 
 #For each player that is found in the number of players given to us by the user, ask them to enter their name and add the input to the empty players list, while also creating a new empty list inside players_words to house their words
 for player in range(num_players):
-  players.append(input("Please enter their names one at a time: \n"))
+  player_input = input("\nPlease enter their names one at a time: ")
+  players.append(player_input.title())
   players_words.append([])
 
 player_to_words = {key: value for key, value in zip(players, players_words)}
 
 #Functions
+
 
 # Create a for loop that loops through each player
 # Ask each player for a word,
@@ -43,11 +46,16 @@ player_to_words = {key: value for key, value in zip(players, players_words)}
 # Print each players score for their word
 def add_playerWords():
   for i in range(len(players)):
-    new_word = input("Please enter a scrabble word: \n")
+    print("\n" + players[i] + " please enter a scrabble word: ")
+    new_word = input("")
     new_word_upper = new_word.upper()
-    player_words_nested = players_words[i]
-    player_words_nested.append(new_word_upper)
-    print(players[i] + " you've earned: " + str(score_word(new_word_upper)) + " points.")
+    d = enchant.Dict("en_Au")
+    if d.check(new_word_upper) == True:
+      player_words_nested = players_words[i]
+      player_words_nested.append(new_word_upper)
+      print("\n" + players[i] + " you've earned: " + str(score_word(new_word_upper)) + " points.\n")
+    else:
+      print("\nThis is not a real word, please make sure you are entering dictionary words only.\n")
 
 # Takes in word from players_word dict.
 # For each letter in that word it gets the associated points allocation from letters_to_points dict & adds it to a temp. variable points_total
@@ -79,11 +87,15 @@ def point_total_for_allPlayers():
 # Each loop -= from temp var
 # Run functions to ask for words, calculate scores, and add scores to each player
 def main():
-  rounds = int(input("Please enter the number of rounds that you would like to play (Each player will get one turn per round): "))
+  rounds = int(input("\nPlease enter the number of rounds that you would like to play (Each player will get one turn per round): "))
   while rounds > 0:
     rounds -= 1
     add_playerWords()
     point_total_for_allPlayers()
+  winnersPoints = max(player_to_points.values())
+  for key, value in player_to_points.items():
+    if value == winnersPoints:
+      print("\nCongratulations " + key + " you win! Your final total was " + str(winnersPoints) + " points!")
 
 main()
 
