@@ -1,14 +1,8 @@
 import random
 from rich.console import Console
 from rich.theme import Theme
-from string import ascii_letters
-
-
-#Key:
-
-# #correct = same letter, same place
-# Misplaced = same letter, wrong place
-# Wrong = wrong
+from string import ascii_letters, ascii_uppercase
+import enchant
 
 def main():
     #Pre-process --> Everything needs happen before you main loop runs
@@ -19,7 +13,8 @@ def main():
     intro()
     length = word_length()
     word = get_random_word(length)
-    guesses = ["_" * (int(length))] * 6
+    num_guesses = 6
+    guesses = ["_" * (int(length))] * num_guesses
 
     #Process (main loop) --> Code executed during main game loop
     for idx in range(6):
@@ -27,6 +22,12 @@ def main():
         refresh_page("Guess {}".format(idx + 1))
         show_guesses(guesses, word)
         guesses[idx] = input("\nGuess word: ")
+
+        d = enchant.Dict("en_Au")
+        while d.check(guesses[idx]) == False:
+            guesses[idx] = input("\nYou have not entered an english word, please try again: ")
+        print("Hint - The word starts with: " + (word[0]).upper())
+
         if guesses[idx] == word:
             break
 
@@ -50,7 +51,7 @@ def intro():
 
 
 def word_length():
-    wordLength = input("\nFirst, decide what is the maximum length of the Wordle word that you wil have to guess. \nPlease enter a number ONLY for this: ")
+    wordLength = input("\nFirst, decide what is the maximum length of the Wordle word that you will have to guess. \nPlease enter a number ONLY for this: ")
     while wordLength.isdigit() == False:
         wordLength = console.input("[red on yellow]You have not entered a number. Please try again:[/]")
     else:
@@ -86,6 +87,7 @@ def show_guess(word, guess):
 
 
 def show_guesses(guesses, word):
+    letters_status = {letter: letter for letter in ascii_uppercase}
     for guess in guesses:
         styled_guess = []
         for letter, correct in zip(guess, word):
@@ -97,8 +99,12 @@ def show_guesses(guesses, word):
                 style = "white on #666666"
             else:
                 style = "dim"
-            styled_guess.append("[{}]{}[/]".format(style, letter))
+            styled_guess.append("[{}]{}[/]".format(style, letter.upper()))
+            if letter.upper() != "_":
+                letters_status[letter.upper()] = "[{}]{}[/]".format(style, letter.upper())
+
         console.print("".join(styled_guess), justify = "center")
+    console.print("\n" + "".join(letters_status.values()), justify = "center")
 
 
 def refresh_page(headline):
